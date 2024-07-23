@@ -9,9 +9,13 @@ for r in arr:
         gold, silver, bronze = r[1], r[2], r[3]
 
 for r in arr:
-    if r[1] <= gold and r[2] <= silver and r[3] <= bronze:
+    if r[1] > gold:
+        cnt += 1
+    elif r[1] == gold and r[2] > silver:
+        cnt += 1
+    elif r[1] == gold and r[2] == silver and r[3] > bronze:
         cnt += 1
 
-ans = N - cnt
+ans = cnt + 1
 
 print(ans)
