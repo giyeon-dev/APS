@@ -2,20 +2,22 @@ N = int(input())
 M = int(input())
 S = input()
 
-target = ''
-for i in range(2 * N + 1):
-    if i % 2 == 0:
-        target += 'I'
-    else:
-        target += 'O'
 
+idx = 0
 cnt = 0
-for i in range(M - len(target) + 1):
-    letter = ''
-    for j in range(i, i + len(target)):
-        letter += S[j]
+ans = 0
 
-    if letter == target:
+while idx < M - 1:
+
+    if S[idx: idx+3] == "IOI":
         cnt += 1
+        if cnt == N:
+            ans += 1
+            cnt -= 1
+        idx += 2
 
-print(cnt)
+    else:
+        cnt = 0
+        idx += 1
+
+print(ans)
