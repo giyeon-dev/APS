@@ -1,22 +1,18 @@
 class Solution {
     public int solution(int i, int j, int k) {
         int answer = 0;
-        String strk = String.valueOf(k);
-        char digit = strk.charAt(0);
         
-        StringBuilder sb = new StringBuilder();
-        for (int num = i; num <= j; num++){
-            sb.append(num);
-        }
-        
-        
-        for (int idx = 0; idx < sb.length(); idx++) {
-            char c = sb.charAt(idx);
+        for ( ; i <= j; i++) {
+            int n = i;
             
-            if (c == digit) {
-                answer++;
-            }
+            while (n > 0) {
+                if (n % 10 == k) {
+                    answer++;
+                }
+                n /= 10;
         }
+            }
+            
         return answer;
     }
 }
