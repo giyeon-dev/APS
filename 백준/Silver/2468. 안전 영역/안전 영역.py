@@ -1,35 +1,41 @@
-import sys
-sys.setrecursionlimit(100000)
-def safety_area(r, c, visited, rain):
-    visited[r][c] = True
+from collections import deque
 
-    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+def bfs(si, sj, h):
+    q = deque()
 
-    for dr, dc in directions:
-        nr = dr + r
-        nc = dc + c
+    q.append((si, sj))
+    v[si][sj] = 1
 
-        if 0 <= nr < N and 0 <= nc < N:
-            if matrix[nr][nc] > rain and not visited[nr][nc]:
-                safety_area(nr, nc, visited, rain)
+    while q:
+        ci, cj = q.popleft()
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        for di, dj in directions:
+            ni, nj = ci+di, cj+dj
+            if 0 <= ni < N and 0 <= nj < N and v[ni][nj] == 0 and area[ni][nj] > h:
+                q.append((ni, nj))
+                v[ni][nj] = 1
+
+
+def solve(h):
+    cnt = 0
+    for i in range(N):
+        for j in range(N):
+            if v[i][j] == 0 and area[i][j] > h:
+                bfs(i, j, h)
+                cnt += 1
+    return cnt
 
 
 N = int(input())
-matrix = [list(map(int, input().split())) for _ in range(N)]
-visited = [[False] * N for _ in range(N)]
-rain = max(max(row) for row in matrix)
-def cnt_area(matrix, rain):
-    visited = [[False] * N for _ in range(N)]
-    cnt = 0
-    for r in range(N):
-        for c in range(N):
-            if matrix[r][c] > rain and not visited[r][c]:
-                cnt += 1
-                safety_area(r, c, visited, rain)
-    return cnt
 
-ans = []
-for i in range(0, rain + 1):
-    ans.append(cnt_area(matrix, i))
+area = [list(map(int, input().split())) for _ in range(N)]
+max_h = max(max(row) for row in area)
 
-print(max(ans))
+ans = 0
+
+for h in range(0, max_h + 1):
+    v = [[0] * N for _ in range(N)]
+    ans = max(ans, solve(h))
+
+
+print(ans)
